@@ -10,6 +10,7 @@ import Login from './view/login';
 import Signup from './view/signup';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
+import KanbanBoard from './view/kanban';
 
 
 
@@ -36,6 +37,10 @@ function App() {
           path: "/",
           element: <Home />,
         },
+        {
+          path: "/kanban-board",
+          element: <KanbanBoard />,
+        },
         // other pages....
 
       ],
@@ -53,7 +58,7 @@ function App() {
   ])
 
   return (
-    <div className="App">
+    <div className="App " >
       <ThemeProvider theme={theme}>
         <ToastContainer
           position="top-right"

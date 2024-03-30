@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../firebaseConfig";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,6 +19,7 @@ import firebaseConfig from "../firebaseConfig";
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const db = getFirestore(app);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth();
 
@@ -57,13 +59,52 @@ const Login = (props) => {
             });
     }
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                navigate('/');
-            }
-        });
 
-    }, [])
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+    
+    
+            const docRef = doc(db, "karban", "SF");
+            const docSnap = await getDoc(docRef);
+    
+            if (docSnap.exists()) {
+              console.log("Document data:", docSnap.data());
+            } else {
+              // docSnap.data() will be undefined in this case
+              console.log("No such document!");
+    
+              // Add a new document in collection "cities"
+              await setDoc(doc(db, "users", user.uid), {
+                nameID:  user.uid,
+                username: user.displayName,
+                kanban : [
+                  {
+                      name: "Not started",
+                      tasks: [{
+                          task: "Running"
+                      }]
+                  },
+                  {
+                      name: "In Progress",
+                      tasks: [{
+                          task: "walking"
+                      }]
+                  },
+                  {
+                      name: "Done",
+                      tasks: [{
+                          task: "Drink"
+                      }]
+                  },
+              ]
+              });
+            }
+            // console.log(user);
+    
+            navigate('/');
+          }
+        });
+      }, [])
     function googleHandle() {
         signInWithPopup(auth, provider)
           .then((result) => {

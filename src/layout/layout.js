@@ -11,7 +11,7 @@ const Layout = () => {
 
     return (
         <>
-            <div className={dark && "dark"}>
+            <div className={dark && "dark" + " dark:bg-zinc-700 min-h-screen "}>
                 <Sidebar open={open} setOpen={setOpen} setDark={setDark} dark={dark} />
                 <div className=" sm:ml-64">
                     <Header setOpen={setOpen}/>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Stack, Tab, Tabs, } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Bars3Icon, BeakerIcon, SparklesIcon, UserCircleIcon, UserIcon } from '@heroicons/react/24/solid'
+import { Bars3Icon,  SparklesIcon, UserCircleIcon, } from '@heroicons/react/24/solid'
 
 const navbarItems = [
   { label: "Home", path: "/" },

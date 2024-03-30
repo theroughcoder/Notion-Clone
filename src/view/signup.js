@@ -1,4 +1,5 @@
 
+import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react"
 import TextInput from "../component/common/textInput";
 import PasswordInput from "../component/common/passwordInput";
@@ -15,9 +16,10 @@ import { GoogleAuthProvider } from "firebase/auth";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
-
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth();
 
@@ -43,8 +45,9 @@ const Signup = (props) => {
 
         updateProfile(auth.currentUser, {
           displayName: userInfo.username
-        }).then(() => {
+        }).then((user) => {
           // Profile updated!
+          console.log(user);
           // ...
         }).catch((error) => {
           // An error occurred
@@ -69,12 +72,51 @@ const Signup = (props) => {
 
   }
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
+
+
+        const docRef = doc(db, "karban", "SF");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+        } else {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+
+          // Add a new document in collection "cities"
+          await setDoc(doc(db, "users", user.uid), {
+            nameID:  user.uid,
+            username: user.displayName,
+            kanban : [
+              {
+                  name: "Not started",
+                  tasks: [{
+                      task: "Running"
+                  }]
+              },
+              {
+                  name: "In Progress",
+                  tasks: [{
+                      task: "walking"
+                  }]
+              },
+              {
+                  name: "Done",
+                  tasks: [{
+                      task: "Drink"
+                  }]
+              },
+          ]
+          });
+        }
+        // console.log(user);
+
         navigate('/');
       }
     });
-
   }, [])
 
   function googleHandle() {
@@ -106,7 +148,7 @@ const Signup = (props) => {
       <TextInput label="Email" placeholder="Enter your email" name="email" setUserInfo={setUserInfo} userInfo={userInfo} />
       <PasswordInput label="Password" placeholder="Enter your password" name="password" setUserInfo={setUserInfo} userInfo={userInfo} />
       <button type="submit" className="mt-8 rounded h-11 bg-green-500 text-white">Signup</button>
-      <button onClick={googleHandle} className="my-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png"/>Sign in with Google</button>
+      <button onClick={googleHandle} className="my-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png" />Sign in with Google</button>
       <Link to="/login" className=" text-blue-600"> Go back to login page</Link>
     </form>
   )
