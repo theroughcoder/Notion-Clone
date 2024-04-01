@@ -9,6 +9,7 @@ import { initializeApp } from "firebase/app";
 import { getDoc, getFirestore, serverTimestamp } from "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useParams } from "react-router-dom";
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
@@ -54,6 +55,7 @@ const KanbanBoard = (props) => {
     const [editTaskName, setEditTaskName] = useState("");
     
     
+    const {id } = useParams();
     const [group, setGroup] = useState([]);
     const auth = getAuth();
 
@@ -67,12 +69,13 @@ const KanbanBoard = (props) => {
                 // ...
                 (async function () {
 
-                    const docRef = doc(db, "users", uid);
+                    const docRef = doc(db, "pages", id);
                     const docSnap = await getDoc(docRef);
 
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        setGroup(data.kanban)
+                        console.log(data);
+                        setGroup(data.Kanban || [])
                     } else {
                         // docSnap.data() will be undefined in this case
                         console.log("No such document!");
@@ -229,17 +232,16 @@ const KanbanBoard = (props) => {
             if (user) {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
-                const uid = user.uid;
-                user = uid;
+               
                 // ...
-                const washingtonRef = doc(db, "users", user);
+                const washingtonRef = doc(db, "pages", id);
 
                 
                 
                 (async function () {
                     
                     await updateDoc(washingtonRef, {
-                        kanban: group,
+                        Kanban: group,
                     });
                 })()
             } else {
@@ -278,7 +280,7 @@ const KanbanBoard = (props) => {
                                     {
                                         item.tasks.map((e, i) => {
                                             return (
-                                                (editTaskForm.group == index && editTaskForm.task == i) ? <div className="p-2 flex flex-col gap-1 dark:bg-zinc-900 bg-slate-800 rounded">
+                                                (editTaskForm.group == index && editTaskForm.task == i) ? <div key={e.task}  className="p-2 flex flex-col gap-1 dark:bg-zinc-900 bg-slate-800 rounded">
                                                     <input value={editTaskName} onChange={(e) => setEditTaskName(e.target.value)} type="text" className="h-10 rounded p-2 dark:bg-zinc-600 dark:text-slate-100" placeholder="Task name" />
                                                     <div className="flex  justify-end gap-2 text-white">
                                                         <CheckIcon className="w-8" onClick={() => editTaskHandle(editTaskName, index, i, e)} />
@@ -297,7 +299,9 @@ const KanbanBoard = (props) => {
                                                         }
                                                         }
                                                         onDragEnd={drop}
-                                                        draggable key={e.task} className="px-2 gap-2 flex border-slate-600 bg-slate-300 px-1 py-2 rounded-md">
+                                                        draggable key={e.task} 
+                                                        className="px-2 gap-2 flex border-slate-600 bg-slate-300 px-1 py-2 rounded-md"
+                                                      >
                                                         <div className="flex-1 ">
 
                                                            <div>Task: {e.task}</div> 

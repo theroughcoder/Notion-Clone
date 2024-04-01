@@ -77,7 +77,7 @@ const Signup = (props) => {
       if (user) {
 
 
-        const docRef = doc(db, "karban", "SF");
+        const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -88,57 +88,54 @@ const Signup = (props) => {
 
           // Add a new document in collection "cities"
           await setDoc(doc(db, "users", user.uid), {
-            nameID:  user.uid,
+            nameID: user.uid,
             username: user.displayName,
-            kanban : [
-              {
-                  name: "Not started",
-                  tasks: [{
-                      task: "Running"
-                  }]
-              },
-              {
-                  name: "In Progress",
-                  tasks: [{
-                      task: "walking"
-                  }]
-              },
-              {
-                  name: "Done",
-                  tasks: [{
-                      task: "Drink"
-                  }]
-              },
-          ]
+
+
           });
         }
         // console.log(user);
 
-        navigate('/');
+        // navigate('/');
       }
     });
   }, [])
 
   function googleHandle() {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        if (user) {
+
+
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+            // Add a new document in collection "cities"
+            await setDoc(doc(db, "users", user.uid), {
+              nameID: user.uid,
+              username: user.displayName,
+
+
+            });
+
+          }
+          // console.log(user);
+
+          navigate('/');
+        }
       });
+
   }
   return (
     <form onSubmit={submitHandler} className="p-5 flex flex-col justify-center sm:p-14 max-w-xl m-auto">

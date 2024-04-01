@@ -11,6 +11,9 @@ import Signup from './view/signup';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import KanbanBoard from './view/kanban';
+import MDXPage from './view/mdxPage';
+import ShareReadOnlyPage from './view/shareReadOnlyPage';
+import ForgotPassword from './view/forgotPassword';
 
 
 
@@ -38,8 +41,12 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/kanban-board",
+          path: "/page/kanban/:id",
           element: <KanbanBoard />,
+        },
+        {
+          path: "/page/MDX/:id",
+          element: <MDXPage />,
         },
         // other pages....
 
@@ -53,6 +60,16 @@ function App() {
     {
       path: "signup",
       element: <Signup />,
+
+    },
+    {
+      path: "forgot-password",
+      element: <ForgotPassword />,
+
+    },
+    {
+      path: "share-readonly-page/:id",
+      element: <ShareReadOnlyPage />,
 
     },
   ])
