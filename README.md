@@ -1,4 +1,4 @@
-# Onito Task
+# Notion clone
 
 ## Overview
 This app is a clone of Notion that comes with features like MDX page and  Kanban board. In the Kanban board, you can create groups and tasks. Tasks can be moved across different groups based on the needs and situations. While on the MDX page, you can set and edit the title and the description of the page. To access those features, you have to go through the authentication process. The UI of the page is quite simple and responsive in light and dark mode. Regarding the technology stacks, Reactjs has been used along with Tailwind.css for styling. It also has common features like sharable links, rearranging of sequences in a list, and drag-and-drop. 
