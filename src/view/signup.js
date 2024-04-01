@@ -89,7 +89,7 @@ const Signup = (props) => {
           // Add a new document in collection "cities"
           await setDoc(doc(db, "users", user.uid), {
             nameID: user.uid,
-            username: user.displayName,
+            // username: user.displayName,
 
 
           });
@@ -124,7 +124,7 @@ const Signup = (props) => {
             // Add a new document in collection "cities"
             await setDoc(doc(db, "users", user.uid), {
               nameID: user.uid,
-              username: user.displayName,
+              // username: user.displayName,
 
 
             });
@@ -145,7 +145,7 @@ const Signup = (props) => {
       <TextInput label="Email" placeholder="Enter your email" name="email" setUserInfo={setUserInfo} userInfo={userInfo} />
       <PasswordInput label="Password" placeholder="Enter your password" name="password" setUserInfo={setUserInfo} userInfo={userInfo} />
       <button type="submit" className="mt-8 rounded h-11 bg-green-500 text-white">Signup</button>
-      <button onClick={googleHandle} className="my-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png" />Sign in with Google</button>
+      <button type="button" onClick={googleHandle} className="my-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png" />Sign in with Google</button>
       <Link to="/login" className=" text-blue-600"> Go back to login page</Link>
     </form>
   )
