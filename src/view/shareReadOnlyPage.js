@@ -93,13 +93,13 @@ const ShareReadOnlyPage = (props) => {
 
     return (
         <div className="p-5">
+            <h1 className=" dark:text-zinc-400 text-2xl">Kanban Board</h1>
 
 
             {
                 data && <div> {data.model == "Kanban" ?
                 <div className="flex gap-5 overflow-auto ">
-                    <h1 className=" dark:text-zinc-400 text-2xl">Kanban Board</h1>
-                        {data.kanban.map((item, index) => {
+                        {data.Kanban && data.Kanban.map((item, index) => {
                             return (
                                 <div
                                     key={index} className="flex-none  w-64 h-96 bg-slate-400 dark:bg-zinc-800 rounded-lg mt-5">
