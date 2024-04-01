@@ -265,7 +265,7 @@ const KanbanBoard = (props) => {
     return (
         <div className="p-5">
             <h1 className=" dark:text-zinc-400 text-2xl">Kanban Board</h1>
-            <div className="flex gap-5 overflow-auto ">
+            <div className="flex gap-5  ">
 
                 {
                     group.map((item, index) => {
@@ -274,9 +274,9 @@ const KanbanBoard = (props) => {
                                 onDragStart={(e) => groupDragStart(e, index)}
                                 onDragEnd={(e) => groupDrop()}
                                 onDragEnter={(e) => { dragEnterForGroup(e, index); groupDragEnter(e, index) }}
-                                key={index} className="flex-none  w-64 h-96 bg-slate-400 dark:bg-zinc-800 rounded-lg mt-5">
+                                key={index} className="flex-none overflow-auto  w-64   bg-slate-400 dark:bg-zinc-800 rounded-lg mt-5">
                                 <div className="dark:text-slate-400 text-xl p-2 text-center">{item.name}</div>
-                                <div className="p-2 flex flex-col gap-2">
+                                <div className="p-2 flex flex-col gap-2 max-h-96 overflow-auto">
                                     {
                                         item.tasks.map((e, i) => {
                                             return (
