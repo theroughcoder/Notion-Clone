@@ -265,7 +265,7 @@ const KanbanBoard = (props) => {
     return (
         <div className="p-5">
             <h1 className=" dark:text-zinc-400 text-2xl">Kanban Board</h1>
-            <div className="flex gap-5  ">
+            <div className="flex gap-5  min-h-96 overflow-auto">
 
                 {
                     group.map((item, index) => {
