@@ -1,6 +1,6 @@
 
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Stack, Switch, Tooltip } from "@mui/material";
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,39 +10,41 @@ import firebaseConfig from "../firebaseConfig";
 import { initializeApp } from "firebase/app";
 import Menu from '@mui/material/Menu';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+import { ModeContext } from "../App";
 
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const Sidebar = ({ open, setOpen, dark, setDark }) => {
-
+const Sidebar = ({ open, setOpen,  }) => {
+  
+  const {dark, setDark} = useContext(ModeContext);
   const [pages, setPages] = useState([]);
   const [favourite, setfavourite] = useState([]);
   const [openPageMenu, setOpenPageMenu] = React.useState(false);
   const anchorRef = React.useRef(null);
-
+  
   const [rename, setRename] = useState("");
   const [renameInput, setRenameInput] = useState(null);
   const [ shareLinkTooltip, setShareLinkTooltip] = useState(null);
-
-
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  
+  
   const handleToggle = () => {
     setOpenPageMenu((prevOpen) => !prevOpen);
   };
-
+  
   const handleClose = (event) => {
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target)
-    ) {
-      return;
-    }
-
-    setOpenPageMenu(false);
-  };
-
-  async function createPageHandler(model) {
+      ) {
+        return;
+      }
+      
+      setOpenPageMenu(false);
+    };
+    
+    async function createPageHandler(model) {
 
     let pageFrame = {}
     if (model == "Kanban") {
@@ -277,7 +279,7 @@ const Sidebar = ({ open, setOpen, dark, setDark }) => {
       </Stack>
       <div className=" bg-slate-500 rounded my-5 flex justify-between items-center pr-5">
 
-        <Switch {...label} defaultChecked checked={dark} onChange={(e) => setDark(e.target.checked)} />
+        <Switch  {...label} defaultChecked checked={dark} onChange={(e) => { setDark(e.target.checked); localStorage.setItem('darkMode', e.target.checked ) }} />
         <span className="text-white">{dark ? "Dark Mode" : "Light Mode"}</span>
       </div>
       <div className="p-2 flex flex-col">

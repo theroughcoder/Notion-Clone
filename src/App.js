@@ -9,16 +9,20 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import Login from './view/login';
 import Signup from './view/signup';
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import KanbanBoard from './view/kanban';
 import MDXPage from './view/mdxPage';
 import ShareReadOnlyPage from './view/shareReadOnlyPage';
 import ForgotPassword from './view/forgotPassword';
+import {  createContext, useContext, useState } from 'react';
+const darkLocalStorageValue = localStorage.getItem('darkMode');
 
-
+export const ModeContext = createContext(null);
 
 function App() {
-  
+ 
+  console.log(  darkLocalStorageValue);
+  const [dark, setDark] = useState(darkLocalStorageValue == "false" ? false : true);
 
   const theme = createTheme({
     palette: {
@@ -75,21 +79,23 @@ function App() {
   ])
 
   return (
-    <div className="App " >
-      <ThemeProvider theme={theme}>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover={true}
-          theme="light"
-          
-        />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </div>
+    <ModeContext.Provider value={{ dark, setDark} }>
+      <div className={ "App"} >
+        <ThemeProvider theme={theme}>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover={true}
+            theme="light"
+
+          />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </div>
+    </ModeContext.Provider>
   );
 }
 

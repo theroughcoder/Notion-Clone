@@ -129,7 +129,7 @@ const Login = (props) => {
                 <TextInput label="Email" placeholder="Enter your email" name="email" setUserInfo={setUserInfo} userInfo={userInfo} />
                 <PasswordInput label="Password" placeholder="Enter your password" name="password" setUserInfo={setUserInfo} userInfo={userInfo} />
                 <button type="submit" className="mt-8 rounded-md h-11  bg-green-500 text-white">Login</button>
-                <button onClick={googleHandle} className="mt-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png" />Sign in with Google</button>
+                <button type="button" onClick={googleHandle} className="mt-8 rounded h-11  bg-stone-200 "><img className="w-6 inline mr-5" src="https://cdn-icons-png.flaticon.com/256/2504/2504739.png" />Sign in with Google</button>
                 <button type="button" onClick={() => navigate('/signup')} className="mt-8 rounded-md h-11 bg-black text-white">Create Account</button>
                 <Link to="/forgot-password" className=" text-blue-600 pt-4" >Forgot Password?</Link>
             </form>
